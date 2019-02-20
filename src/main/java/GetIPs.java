@@ -1,12 +1,10 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GetIPs
 {
-
     private int[] IP1;
     private int[] IP2;
 
@@ -20,24 +18,15 @@ public class GetIPs
         return IP2;
     }
 
-    GetIPs()
+    GetIPs() // Enter 2 String valid IP address and print all that between
     {
         IP1 = enterIP();
         IP2 = enterIP();
         getBetweenIPs(IP1, IP2).forEach(System.out::println);
     }
 
-    GetIPs(String ip1, String ip2) throws IOException
-    {
-        if (checkIP(ip1) && checkIP(ip2))
-        {
-            IP1 = convertIP(ip1);
-            IP2 = convertIP(ip2);
-        }
-        else throw new IOException();
-    }
 
-    int[] enterIP()
+    int[] enterIP() // Enter String, call validate IP and convert methods, after that convert it to int[]
     {
         while (true)
         {
@@ -57,7 +46,7 @@ public class GetIPs
         }
     }
 
-    boolean checkIP(String ip)
+    boolean checkIP(String ip) // Checking String ip format. Returns false in case not valid for IP4 format
     {
         try
         {
@@ -90,7 +79,7 @@ public class GetIPs
         }
     }
 
-    private int[] convertIP(String IP)
+    private int[] convertIP(String IP) //Converting String IP to int[]. No format checks in this method.
     {
         String[] IPparts = IP.split("\\.");
         int[] intIP = new int[4];
@@ -101,25 +90,25 @@ public class GetIPs
         return intIP;
     }
 
-    List<String> getBetweenIPs(int[] IP1, int[] IP2)
+    List<String> getBetweenIPs(int[] IP1, int[] IP2) //Get 2 valid int[] IP address and generate all IP between to List
     {
         List<String> result = new ArrayList<>();
-        int[] smallestIP = getSmallestOrBiggestArrayIntIP(IP1,IP2,true);
-        int[] biggestIP = getSmallestOrBiggestArrayIntIP(IP1,IP2,false);
+        int[] smallestIP = getSmallestOrBiggestArrayIntIP(IP1,IP2,true); // This will select smallest IP
+        int[] biggestIP = getSmallestOrBiggestArrayIntIP(IP1,IP2,false); // This will select biggest IP
 
-        boolean[] matcher = new boolean[4];
+        boolean[] matcher = new boolean[4]; // array that will show corresponding block match between 2 IP address (4 blocks total)
         for (int i = 0; i < matcher.length; i++)
         {
-            if (smallestIP[i]==Math.max(IP1[i],IP2[i])) matcher[i]=true;
+            if (smallestIP[i]==Math.max(IP1[i],IP2[i])) matcher[i]=true; // initial check for match.
             else break;
         }
-       while (!(matcher[3] && matcher[2] && matcher[1] && matcher[0]))
+       while (!(matcher[3] && matcher[2] && matcher[1] && matcher[0])) // all 4 blocks are match
         {
-            while (!(matcher[3] && matcher[2] && matcher[1]))
+            while (!(matcher[3] && matcher[2] && matcher[1])) // last 3 blocks are match
             {
-                while (!(matcher[3] && matcher[2]))
+                while (!(matcher[3] && matcher[2])) // last 2 blocks are match
                 {
-                    while (!(matcher[3]))
+                    while (!(matcher[3])) // block number 4 is equal
                     {
                         smallestIP[3]++;;
                         if (smallestIP[3] == biggestIP[3] && matcher[2] && matcher[1] & matcher[0])
@@ -168,7 +157,7 @@ public class GetIPs
         return result;
     }
 
-int[] getSmallestOrBiggestArrayIntIP(int[] IP1, int[] IP2, boolean smallTrueBigFalse)
+int[] getSmallestOrBiggestArrayIntIP(int[] IP1, int[] IP2, boolean smallTrueBigFalse) // util method used to get smallest or biggest IP depending on boolean
 {
     int depth = 0;
     int mark = 0;
